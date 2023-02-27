@@ -12,10 +12,6 @@ router.get('/', async (req, res) => {
     }
 });
 
-router.get('/specific', (req, res) => {
-    res.send('We are on specific item');
-});
-
 router.post('/', async (req, res) => {
     const item = new Item({
         name: req.body.name,

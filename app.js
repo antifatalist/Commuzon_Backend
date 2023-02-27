@@ -10,7 +10,7 @@ app.use(bodyParser.json());
 //Import routes
 const itemsRoute = require('./routes/items');
 
-app.use('/items', itemsRoute);
+app.use('/api/items', itemsRoute);
 
 //Middlewares
 
@@ -20,7 +20,7 @@ app.use('/items', itemsRoute);
 
 //ROUTES
 
-app.get('/', (req, res) => {
+app.get('/api', (req, res) => {
     res.send('We are on home');
 });
 
