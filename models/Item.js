@@ -1,23 +1,60 @@
 const mongoose = require('mongoose');
 
+const ItemQuantitySchema = mongoose.Schema({
+    value: {
+        type: Number,
+        required: true
+    },
+    units: {
+        type: String,
+        required: false
+    }
+});
+
 const ItemSchema = mongoose.Schema({
-    // Need to have a uuid as well
+
+    // id field automatically added on post
+
     name: {
         type: String,
         required: true
     },
-    provider: {
+    quantity: {
+        type: ItemQuantitySchema,
+        required: true
+    },
+    productId: {
+        type: Number,
+        required: true
+    },
+    producerId: {
+        type: Number,
+        required: false
+    },
+    possessorId: {
+        type: Number,
+        required: true
+    },
+    location: {
         type: String,
         required: true
     },
-    producer: {
+    condition: {
+        type: String,
+        required: true
+    },
+    dateProduced: {
+        type: Date,
+        required: false
+    },
+    locationProduced: {
         type: String,
         required: false
     },
-    dateListed: {
-        type: Date,
-        default: Date.now
+    photosUrl: {
+        type: String,
+        required: false
     }
 });
 
-module.exports = mongoose.model('Items', ItemSchema);
+module.exports = mongoose.model('Item', ItemSchema);
