@@ -9,6 +9,9 @@ app.use(bodyParser.json());
 
 //Import routes
 const itemsRoute = require("./routes/items");
+const productsRoute = require("./routes/products");
+const listingsRoute = require("./routes/listings");
+const requestsRoute = require("./routes/requests");
 
 app.use("/api/items", itemsRoute);
 
