@@ -40,7 +40,10 @@ app.post("/createUser", async (req, res) => {
 app.post("/login", async (req, res) => {
   const user = users.find((c) => c.username == req.body.username);
   //check to see if the user exists in the list of registered users
-  if (user == null) res.status(404).send("User does not exist!");
+  if (user == null) {
+    res.status(404).send("User does not exist!");
+    return;
+  }
   //if user does not exist, send a 400 response
   if (await bcrypt.compare(req.body.password, user.password)) {
     const accessToken = generateAccessToken({ username: req.body.username });
