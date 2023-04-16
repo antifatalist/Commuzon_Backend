@@ -1,6 +1,8 @@
 require("dotenv").config();
+const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const User = require("./models/User");
 
 //this will allow us to pull params from .env file
 const express = require("express");
@@ -8,6 +10,12 @@ const app = express();
 app.use(express.json());
 //This middleware will allow us to pull req.body.<params>
 const port = process.env.TOKEN_SERVER_PORT;
+
+//Connect to DB
+mongoose.set("strictQuery", true);
+mongoose.connect(process.env.DB_CONNECTION, () => {
+  console.log("Connected to DB!");
+});
 
 // accessTokens
 function generateAccessToken(user) {
@@ -23,34 +31,47 @@ function generateRefreshToken(user) {
   return refreshToken;
 }
 
-const users = [];
-// REGISTER A USER
 app.post("/createUser", async (req, res) => {
-  const user = req.body.username;
   const hashedPassword = await bcrypt.hash(req.body.password, 10);
-  users.push({
-    username: user,
+  const user = new User({
+    username: req.body.username,
     password: hashedPassword,
   });
-  res.status(201).send(users);
-  console.log(users);
+  try {
+    console.log(user);
+    const savedUser = await user.save();
+    res.statusMessage = "User created";
+    res.sendStatus(201).end();
+  } catch (err) {
+    res.json({ message: err });
+  }
 });
 
-//AUTHENTICATE LOGIN AND RETURN JWT TOKEN
 app.post("/login", async (req, res) => {
-  const user = users.find((c) => c.username == req.body.username);
-  //check to see if the user exists in the list of registered users
-  if (user == null) {
-    res.status(404).send("User does not exist!");
+  var user = "";
+  try {
+    user = await User.findOne({ username: req.body.username });
+  } catch (err) {
+    console.log(err);
+    res.statusMessage = "User not found";
+    res.sendStatus(404).end();
     return;
   }
+
+  if (user == null) {
+    res.statusMessage = "User not found";
+    res.sendStatus(404).end();
+    return;
+  }
+
   //if user does not exist, send a 400 response
   if (await bcrypt.compare(req.body.password, user.password)) {
     const accessToken = generateAccessToken({ username: req.body.username });
     const refreshToken = generateRefreshToken({ username: req.body.username });
     res.json({ accessToken: accessToken, refreshToken: refreshToken });
   } else {
-    res.status(401).send("Password Incorrect!");
+    res.statusMessage = "Password incorrect";
+    res.sendStatus(401).end();
   }
 });
 
