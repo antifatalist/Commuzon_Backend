@@ -16,6 +16,8 @@ router.get("/", validateToken, async (req, res) => {
 router.post("/", validateToken, async (req, res) => {
   const request = new Request({
     requesterId: req.body.requesterId,
+    description: req.body.description,
+    addressees: req.body.addressees,
     dateNeeded: req.body.dateNeeded,
     shippingPreferences: req.body.shippingPreferences,
   });
