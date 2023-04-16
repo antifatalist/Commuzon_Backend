@@ -14,6 +14,9 @@ const listingsRoute = require("./routes/listings");
 const requestsRoute = require("./routes/requests");
 
 app.use("/api/items", itemsRoute);
+app.use("/api/products", productsRoute);
+app.use("/api/listings", listingsRoute);
+app.use("/api/requests", requestsRoute);
 
 //ROUTES
 

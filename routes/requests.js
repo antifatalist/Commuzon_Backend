@@ -1,9 +1,10 @@
 const express = require("express");
 const Request = require("../models/Request");
+const validateToken = require("../validate");
 
 const router = express.Router();
 
-router.get("/", async (req, res) => {
+router.get("/", validateToken, async (req, res) => {
   try {
     const requests = await Request.find();
     res.json(requests);
@@ -12,7 +13,7 @@ router.get("/", async (req, res) => {
   }
 });
 
-router.post("/", async (req, res) => {
+router.post("/", validateToken, async (req, res) => {
   const request = new Request({
     requesterId: req.body.requesterId,
     dateNeeded: req.body.dateNeeded,
@@ -27,7 +28,7 @@ router.post("/", async (req, res) => {
   }
 });
 
-router.get("/:id", async (req, res) => {
+router.get("/:id", validateToken, async (req, res) => {
   try {
     const request = await Request.findById(req.params.id);
     res.json(request);
@@ -36,7 +37,7 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", validateToken, async (req, res) => {
   try {
     const removedRequest = await Request.remove({ _id: req.params.id });
     res.json(removedRequest);
@@ -45,7 +46,7 @@ router.delete("/:id", async (req, res) => {
   }
 });
 
-router.patch("/:id", async (req, res) => {
+router.patch("/:id", validateToken, async (req, res) => {
   try {
     const updatedRequest = await Request.updateOne(
       { _id: req.params.id },

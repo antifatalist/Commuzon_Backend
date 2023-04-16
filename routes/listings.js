@@ -1,9 +1,10 @@
 const express = require("express");
 const Listing = require("../models/Listing");
+const validateToken = require("../validate");
 
 const router = express.Router();
 
-router.get("/", async (req, res) => {
+router.get("/", validateToken, async (req, res) => {
   try {
     const listings = await Listing.find();
     res.json(listings);
@@ -12,7 +13,7 @@ router.get("/", async (req, res) => {
   }
 });
 
-router.post("/", async (req, res) => {
+router.post("/", validateToken, async (req, res) => {
   const listing = new Listing({
     itemId: req.body.itemId,
     providerId: req.body.providerId,
@@ -30,7 +31,7 @@ router.post("/", async (req, res) => {
   }
 });
 
-router.get("/:id", async (req, res) => {
+router.get("/:id", validateToken, async (req, res) => {
   try {
     const listing = await Listing.findById(req.params.id);
     res.json(listing);
@@ -39,7 +40,7 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", validateToken, async (req, res) => {
   try {
     const removedListing = await Listing.remove({ _id: req.params.id });
     res.json(removedListing);
@@ -48,7 +49,7 @@ router.delete("/:id", async (req, res) => {
   }
 });
 
-router.patch("/:id", async (req, res) => {
+router.patch("/:id", validateToken, async (req, res) => {
   try {
     const updatedListing = await Listing.updateOne(
       { _id: req.params.id },
