@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const requestSchema = require("./Request");
+const Request = require("./Request");
 
 const options = { discriminatorKey: "kind" };
 
