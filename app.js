@@ -12,11 +12,13 @@ const itemsRoute = require("./routes/items");
 const productsRoute = require("./routes/products");
 const listingsRoute = require("./routes/listings");
 const requestsRoute = require("./routes/requests");
+const communityRequestsRoute = require("./routes/communityrequests");
 
 app.use("/api/items", itemsRoute);
 app.use("/api/products", productsRoute);
 app.use("/api/listings", listingsRoute);
 app.use("/api/requests", requestsRoute);
+app.use("/api/communityrequests", communityRequestsRoute);
 
 //ROUTES
 
