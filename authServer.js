@@ -69,7 +69,11 @@ app.post("/login", async (req, res) => {
   if (await bcrypt.compare(req.body.password, user.password)) {
     const accessToken = generateAccessToken({ username: req.body.username });
     const refreshToken = generateRefreshToken({ username: req.body.username });
-    res.json({ accessToken: accessToken, refreshToken: refreshToken });
+    res.json({
+      accessToken: accessToken,
+      refreshToken: refreshToken,
+      userId: user._id,
+    });
   } else {
     res.statusMessage = "Password incorrect";
     res.sendStatus(401).end();
