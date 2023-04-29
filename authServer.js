@@ -34,6 +34,7 @@ function generateRefreshToken(user) {
 app.post("/createUser", async (req, res) => {
   const hashedPassword = await bcrypt.hash(req.body.password, 10);
   const user = new User({
+    email: req.body.email,
     username: req.body.username,
     password: hashedPassword,
   });
