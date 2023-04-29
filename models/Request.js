@@ -5,7 +5,7 @@ const options = { discriminatorKey: "kind" };
 const requestSchema = new mongoose.Schema(
   {
     requesterId: {
-      type: Number,
+      type: Schema.Types.ObjectId,
       required: true,
     },
     dateCreated: {
